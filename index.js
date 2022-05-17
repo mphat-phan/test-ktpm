@@ -5,6 +5,8 @@ var email1 = $('#email1');
 
 var usernameLogin = $('#username');
 var passwordLogin = $('#password');
+
+var noticeMsg = $('#noticeMsg');
 $(document).ready(function() {
     $('#register').on('click', function(e) {
         const username = username1.val();
@@ -24,15 +26,27 @@ $(document).ready(function() {
         
         const found = existingUser.find(element => element.username == user.username);
         if(found){
-            alert('Tài khoản tồn tại')
+            noticeMsg.html(`
+                <div class="alert alert-danger" role="alert">
+                    Tài khoản đã tồn tại
+                </div>
+            `);
         }
         else if(password !== cpassword){
-            alert('Không trùng mật khẩu')
+            noticeMsg.html(`
+                <div class="alert alert-danger" role="alert">
+                    Không trùng mật khẩu
+                </div>
+            `);
         }
         else{
             existingUser.push(user);
             localStorage.setItem("userList", JSON.stringify(existingUser));
-            alert('Đăng ký thành công')
+            noticeMsg.html(`
+                <div class="alert alert-success" role="alert">
+                Đăng ký thành công
+                </div>
+            `);
         }
         e.preventDefault();
        
@@ -47,10 +61,18 @@ $(document).ready(function() {
         var existingUser = JSON.parse(localStorage.getItem("userList"));
         const found = existingUser.find(element => element.username == user.username && element.password == user.password);
         if(found){
-            alert('Đăng nhập thành công');
+            noticeMsg.html(`
+                <div class="alert alert-success" role="alert">
+                Đăng nhập thành công
+                </div>
+            `);
         }
         else{
-            alert("Đăng nhập thất bại");
+            noticeMsg.html(`
+                <div class="alert alert-danger" role="alert">
+                Đăng nhập thất bại
+                </div>
+            `);
         }
         e.preventDefault();
        
