@@ -24,9 +24,9 @@ $(document).ready(function() {
     }
     function ValidateCPassword(pass,cpass){
         if(pass === cpass){
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
     $('#register').on('click', function(e) {
         const username = username1.val();
