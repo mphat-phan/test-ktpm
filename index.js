@@ -17,7 +17,7 @@ $(document).ready(function() {
             return (false)
     }
     function ValidatePassword(pass){
-        if(pass.length >= 6){
+        if(pass.length > 6){
             return false;
         }
         return true;
