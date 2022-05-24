@@ -8,6 +8,26 @@ var passwordLogin = $('#password');
 
 var noticeMsg = $('#noticeMsg');
 $(document).ready(function() {
+    function ValidateEmail(mail) 
+    {
+        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))
+        {
+            return (true)
+        }
+            return (false)
+    }
+    function ValidatePassword(pass){
+        if(pass.length >= 6){
+            return false;
+        }
+        return true;
+    }
+    function ValidateCPassword(pass,cpass){
+        if(pass === cpass){
+            return false;
+        }
+        return true;
+    }
     $('#register').on('click', function(e) {
         const username = username1.val();
         const password = password1.val();
@@ -23,6 +43,23 @@ $(document).ready(function() {
 
         var existingUser = JSON.parse(localStorage.getItem("userList"));
         if(existingUser == null) existingUser = [];
+
+        if(!ValidatePassword(password)){
+            noticeMsg.html(`
+                <div class="alert alert-danger" role="alert">
+                    Password phải trên 6 ký tự
+                </div>
+            `);
+            return;
+        }
+        if(!ValidateEmail(email)){
+            noticeMsg.html(`
+                <div class="alert alert-danger" role="alert">
+                    Email không đúng định dạng
+                </div>
+            `);
+            return;
+        }
         
         const found = existingUser.find(element => element.username == user.username);
         if(found){
@@ -32,7 +69,7 @@ $(document).ready(function() {
                 </div>
             `);
         }
-        else if(password !== cpassword){
+        else if(!ValidateCPassword(password,cpassword)){
             noticeMsg.html(`
                 <div class="alert alert-danger" role="alert">
                     Không trùng mật khẩu
@@ -52,13 +89,24 @@ $(document).ready(function() {
        
     });
     $('#login').on('click', function(e) {
+        e.preventDefault(); 
         const username = usernameLogin.val();
         const password = passwordLogin.val();
         var user = {
             username,
             password
         }
+        if(!ValidatePassword(password)){
+            noticeMsg.html(`
+                <div class="alert alert-danger" role="alert">
+                Password phải trên 6 ký tự
+                </div>
+            `);
+            return;
+        }
+        
         var existingUser = JSON.parse(localStorage.getItem("userList"));
+        console.log(username,password);
         const found = existingUser.find(element => element.username == user.username && element.password == user.password);
         if(found){
             noticeMsg.html(`
@@ -74,7 +122,7 @@ $(document).ready(function() {
                 </div>
             `);
         }
-        e.preventDefault();
+        
        
     });
 })
